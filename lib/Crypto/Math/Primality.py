@@ -109,8 +109,7 @@ def miller_rabin_test(candidate, iterations, randfunc=None):
     # Step 5
     return PROBABLY_PRIME
 
-
-def lucas_test(candidate):
+def lucas_test(candidate, trace=False):
     """Perform a Lucas primality test on an integer.
 
     The test is specified in Section C.3.3 of `FIPS PUB 186-4`__.
@@ -128,9 +127,13 @@ def lucas_test(candidate):
     if not isinstance(candidate, Integer):
         candidate = Integer(candidate)
 
+    if trace:
+        print "Lucas candidate:", int(candidate)
+
     # Step 1
     if candidate.is_even() or candidate.is_perfect_square():
-        print "Lucas test: even or square"
+        if trace:
+                print "Lucas test: even or square"
         return COMPOSITE
 
     # Step 2
@@ -144,12 +147,14 @@ def lucas_test(candidate):
     for D in alternate():
         js = Integer.jacobi_symbol(D, candidate)
         if js == 0:
-            print "Lucas test: zero jacobi"
+            if trace:
+                print "Lucas test: zero jacobi"
             return COMPOSITE
         if js == -1:
             break
     else:
-        print "Lucas test: unknown D"
+        if trace:
+            print "Lucas test: unknown D"
         return COMPOSITE
     # Found D. P=1 and Q=(1-D)/4 (note that Q is guaranteed to be an integer)
 
@@ -165,9 +170,15 @@ def lucas_test(candidate):
     U_temp = Integer(0)
     V_temp = Integer(0)
     # Step 6
+    if trace:
+        print "D:%d, r:%d" % (int(D), int(r))
     for i in xrange(r - 1, -1, -1):
         # Square
         # U_temp = U_i * V_i % candidate
+        if trace:
+            print "Iteration:", i
+            print "U_i:", int(U_i)
+            print "V_i:", int(V_i)
         U_temp.set(U_i)
         U_temp *= V_i
         U_temp %= candidate
@@ -201,7 +212,8 @@ def lucas_test(candidate):
             V_i.set(V_temp)
     # Step 7
     if U_i == 0:
-        print "Lucas test: zero U_i"
+        if trace:
+                print "Lucas test: zero U_i"
         return PROBABLY_PRIME
     return COMPOSITE
 
@@ -212,7 +224,7 @@ from Crypto.Util.number import sieve_base as _sieve_base
 _sieve_base = _sieve_base[:100]
 
 
-def test_probable_prime(candidate, randfunc=None):
+def test_probable_prime(candidate, randfunc=None, trace=False):
     """Test if a number is prime.
 
     A number is qualified as prime if it passes a certain
@@ -264,7 +276,7 @@ def test_probable_prime(candidate, randfunc=None):
                          randfunc=randfunc) == COMPOSITE:
         print "MillerRabin test failed"
         return COMPOSITE
-    if lucas_test(candidate) == COMPOSITE:
+    if lucas_test(candidate, trace=trace) == COMPOSITE:
         print "Lucas test failed"
         return COMPOSITE
     return PROBABLY_PRIME

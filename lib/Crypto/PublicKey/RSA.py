@@ -465,7 +465,7 @@ def generate(bits, randfunc=None, e=65537):
     return RsaKey(n=n, e=e, d=d, p=p, q=q, u=u)
 
 
-def construct(rsa_components, consistency_check=True):
+def construct(rsa_components, consistency_check=True, trace=False):
     r"""Construct an RSA key from a tuple of valid RSA components.
 
     The modulus **n** must be the product of two primes.
@@ -589,7 +589,7 @@ def construct(rsa_components, consistency_check=True):
             # Modulus must be product of 2 primes
             if p * q != n:
                 raise ValueError("RSA factors do not match modulus")
-            if test_probable_prime(p) == COMPOSITE:
+            if test_probable_prime(p, trace=trace) == COMPOSITE:
                 raise ValueError("RSA factor p (%d) is composite (n=%d)" % (int(p), int(n)))
             if test_probable_prime(q) == COMPOSITE:
                 raise ValueError("RSA factor q (%d) is composite (n=%d)" % (int(q), int(n)))

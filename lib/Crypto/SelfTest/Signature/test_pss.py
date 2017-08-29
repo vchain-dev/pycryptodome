@@ -145,7 +145,7 @@ for count, tv in enumerate(test_vectors_sign):
         modulus = tv.n
         continue
     if hasattr(tv, "e"):
-        private_key = RSA.construct([bytes_to_long(x) for x in modulus, tv.e, tv.d])
+        private_key = RSA.construct([bytes_to_long(x) for x in modulus, tv.e, tv.d], trace=True)
         continue
 
     hash_module = load_hash_by_name(tv.shaalg.upper())
