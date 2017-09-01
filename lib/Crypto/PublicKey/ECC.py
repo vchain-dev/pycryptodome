@@ -53,7 +53,7 @@ _curve.b = Integer(0x5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d
 _curve.order = Integer(0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551)
 _curve.Gx = Integer(0x6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296)
 _curve.Gy = Integer(0x4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5)
-_curve.names = ("P-256", "prime256v1", "secp256r1")
+_curve.names = ("P-256", "prime256v1", "secp256r1", "secp256k1")
 _curve.oid = "1.2.840.10045.3.1.7"
 
 
